@@ -1,0 +1,203 @@
+{
+  "nodes": [
+
+    { "id": "START", "type": "start", "text": "Good evening. Let’s look at your day.", "next": "A1_OPEN" },
+
+    { "id": "A1_OPEN", "type": "question", "text": "How would you describe today in one word?", "options": ["Productive", "Mixed", "Tough", "Frustrating"], "next": "A1_D1" },
+
+    {
+      "id": "A1_D1",
+      "type": "decision",
+      "rules": {
+        "Productive": "A1_Q_HIGH",
+        "Mixed": "A1_Q_HIGH",
+        "Tough": "A1_Q_LOW",
+        "Frustrating": "A1_Q_LOW"
+      }
+    },
+
+    // -------- AXIS 1: LOCUS --------
+
+    {
+      "id": "A1_Q_HIGH",
+      "type": "question",
+      "text": "Since things went well, what was the primary driver?",
+      "options": ["My preparation", "The team's effort", "Pure luck", "I adapted quickly"],
+      "signals": ["axis1:internal", "axis1:external", "axis1:external", "axis1:internal"],
+      "next": "A1_Q_STRESS"
+    },
+
+    {
+      "id": "A1_Q_LOW",
+      "type": "question",
+      "text": "When things got difficult, what was your first instinct?",
+      "options": ["Find what I could control", "Wait for help", "Check for my own mistake", "Feel the task was unfair"],
+      "signals": ["axis1:internal", "axis1:external", "axis1:internal", "axis1:external"],
+      "next": "A1_Q_STRESS"
+    },
+
+    {
+      "id": "A1_Q_STRESS",
+      "type": "question",
+      "text": "How did you handle the most stressful moment?",
+      "options": ["Took a breath and pivoted", "Felt overwhelmed", "Led a solution", "Blamed lack of resources"],
+      "signals": ["axis1:internal", "axis1:external", "axis1:internal", "axis1:external"],
+      "next": "A1_D_FINAL"
+    },
+
+    {
+      "id": "A1_D_FINAL",
+      "type": "decision",
+      "condition": "axis1.dominant=internal",
+      "true": "A1_R_INT",
+      "false": "A1_R_EXT"
+    },
+
+    {
+      "id": "A1_R_INT",
+      "type": "reflection",
+      "text": "You saw your role in shaping outcomes today. That sense of agency keeps you in control, even when things are uncertain.",
+      "next": "B1"
+    },
+
+    {
+      "id": "A1_R_EXT",
+      "type": "reflection",
+      "text": "Today felt influenced by external factors. Still, even small choices you made had impact—those are worth noticing.",
+      "next": "B1"
+    },
+
+    {
+      "id": "B1",
+      "type": "bridge",
+      "text": "Now, let’s shift from how you handled things to what you gave.",
+      "next": "A2_OPEN"
+    },
+
+    // -------- AXIS 2: CONTRIBUTION --------
+
+    {
+      "id": "A2_OPEN",
+      "type": "question",
+      "text": "Think about your interactions today. Which feels most accurate?",
+      "options": ["I helped a colleague", "I went beyond my role", "I focused only on my tasks", "I felt overlooked"],
+      "signals": ["axis2:contribution", "axis2:contribution", "axis2:neutral", "axis2:entitlement"],
+      "next": "A2_Q_TEAM"
+    },
+
+    {
+      "id": "A2_Q_TEAM",
+      "type": "question",
+      "text": "In a team setting, how did you show up?",
+      "options": ["Shared knowledge", "Supported others’ ideas", "Did my part only", "Felt others weren’t contributing"],
+      "signals": ["axis2:contribution", "axis2:contribution", "axis2:neutral", "axis2:entitlement"],
+      "next": "A2_Q_VALUE"
+    },
+
+    {
+      "id": "A2_Q_VALUE",
+      "type": "question",
+      "text": "What mattered most about your work today?",
+      "options": ["Value created", "What I learned", "Recognition received", "Recognition missed"],
+      "signals": ["axis2:contribution", "axis2:contribution", "axis2:entitlement", "axis2:entitlement"],
+      "next": "A2_D_FINAL"
+    },
+
+    {
+      "id": "A2_D_FINAL",
+      "type": "decision",
+      "condition": "axis2.dominant=contribution",
+      "true": "A2_R_CON",
+      "false": "A2_R_ENT"
+    },
+
+    {
+      "id": "A2_R_CON",
+      "type": "reflection",
+      "text": "You leaned toward contribution today. This builds trust and long-term impact, even when not immediately visible.",
+      "next": "B2"
+    },
+
+    {
+      "id": "A2_R_ENT",
+      "type": "reflection",
+      "text": "You were attentive to what you received. Shifting focus toward contribution can often reduce frustration.",
+      "next": "B2"
+    },
+
+    {
+      "id": "B2",
+      "type": "bridge",
+      "text": "Finally, let’s expand your perspective beyond yourself.",
+      "next": "A3_Q1"
+    },
+
+    // -------- AXIS 3: RADIUS --------
+
+    {
+      "id": "A3_Q1",
+      "type": "question",
+      "text": "When solving problems today, who was in your mind?",
+      "options": ["My own workload", "My team", "Customers/users", "The larger mission"],
+      "signals": ["axis3:self", "axis3:team", "axis3:others", "axis3:others"],
+      "next": "A3_Q2"
+    },
+
+    {
+      "id": "A3_Q2",
+      "type": "question",
+      "text": "When you felt pressure, what was your focus?",
+      "options": ["My performance", "Team success", "User impact", "Someone else’s difficulty"],
+      "signals": ["axis3:self", "axis3:team", "axis3:others", "axis3:others"],
+      "next": "A3_Q3"
+    },
+
+    {
+      "id": "A3_Q3",
+      "type": "question",
+      "text": "What would have made today feel most meaningful?",
+      "options": ["Finishing my tasks", "Helping my team succeed", "Solving a real user problem", "Making someone’s day easier"],
+      "signals": ["axis3:self", "axis3:team", "axis3:others", "axis3:others"],
+      "next": "A3_D_FINAL"
+    },
+
+    {
+      "id": "A3_D_FINAL",
+      "type": "decision",
+      "condition": "axis3.dominant=self",
+      "true": "A3_R_SELF",
+      "false": "A3_R_OTHER"
+    },
+
+    {
+      "id": "A3_R_SELF",
+      "type": "reflection",
+      "text": "Your focus was mostly inward today. Expanding your view can bring more meaning and reduce pressure.",
+      "next": "SUMMARY"
+    },
+
+    {
+      "id": "A3_R_OTHER",
+      "type": "reflection",
+      "text": "You considered others in your thinking. That outward focus often creates deeper satisfaction and impact.",
+      "next": "SUMMARY"
+    },
+
+    // -------- SUMMARY --------
+
+    {
+      "id": "SUMMARY",
+      "type": "summary",
+      "text": "You described your day as '{A1_OPEN.answer}'. You showed {axis1.dominant} agency, leaned toward {axis2.dominant}, and focused on {axis3.dominant}. Notice how your choices shaped your experience more than it first appeared.",
+      "next": "END"
+    },
+
+    {
+      "id": "END",
+      "type": "end",
+      "text": "Reflection complete. See you tomorrow."
+    }
+
+  ]
+}
+
